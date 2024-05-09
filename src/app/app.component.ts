@@ -2,36 +2,27 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import { GameControlComponent } from './game-control/game-control.component';
-import { ControllerService } from './controller.service';
-import { OddComponent } from './odd/odd.component';
-import { EvenComponent } from './even/even.component';
+import { ActiveUsersComponent } from './active-users/active-users.component';
+import { InactiveUsersComponent } from './inactive-users/inactive-users.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, CommonModule, GameControlComponent, OddComponent, EvenComponent],
+  imports: [RouterOutlet, FormsModule, CommonModule, ActiveUsersComponent, InactiveUsersComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  activeUsers = ['Max', 'Anna'];
+  inactiveUsers = ['Chris', 'Manu'];
 
-  showSecret = true;
-  ref: any;
-  array: number [] = [];
-
-  constructor (
-    private log: ControllerService
-  ) {}
-
-  ngOnInit () {
-    this.log.log.subscribe ((array: number []) => {
-      this.array = array;
-      console.log (this.array)
-    });
+  onSetToInactive(id: number) {
+    this.inactiveUsers.push(this.activeUsers[id]);
+    this.activeUsers.splice(id, 1);
   }
 
-  onDisplayDetails () {
-    clearInterval (this.ref);
+  onSetToActive(id: number) {
+    this.activeUsers.push(this.inactiveUsers[id]);
+    this.inactiveUsers.splice(id, 1);
   }
 }
